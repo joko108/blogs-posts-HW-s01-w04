@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import { BLOGS_ROUTES } from "../constants/blogs.paths";
 import { getBlogListHandler } from "./handlers/get-blog-list.handler";
 import { getBlogHandler } from "./handlers/get-blog.handler";
@@ -8,11 +8,14 @@ import { deleteBlogHandler } from "./handlers/delete-blog.handler";
 import { idValidation } from "../../core/middlewares/validation/params-id.validation.middleware";
 import { inputValidationResultMiddleware } from "../../core/middlewares/validation/input-validation-result.middleware";
 import { superAdminGuardMiddleware } from "../../auth/middlewares/super-admin.guard.middleware";
-import { blogInputDtoValidation } from "../validation/blog.unput-dto.validation-middlewares";
+import { blogInputDtoValidation } from "../validation/blog.input-dto.validation-middlewares";
 import {
     paginationAndSortingValidation
 } from "../../core/middlewares/validation/query-pagination-sorting.validation.middleware";
-import {sanitizeQueryParams} from "../../core/middlewares/validation/sanitize-query.middleware";
+import { sanitizeQueryParams } from "../../core/middlewares/validation/sanitize-query.middleware";
+import { BlogSortField } from "./input/blog-sort-field";
+import {PostSortField} from "../../posts/router/input/post-sort-field";
+import {getPostsByBlogIdHandler} from "./handlers/get-posts-by-blog-id.handler";
 
 export const blogsRouter = Router({});
 
@@ -21,10 +24,10 @@ export const blogsRouter = Router({});
 blogsRouter
     .get(
         BLOGS_ROUTES.ROOT,
-        paginationAndSortingValidation,
+        paginationAndSortingValidation(BlogSortField),
         inputValidationResultMiddleware,
         sanitizeQueryParams,
-        getBlogListHandler)
+        getBlogListHandler as unknown as RequestHandler)
 
     .get(
         BLOGS_ROUTES.BY_ID,
@@ -55,4 +58,13 @@ blogsRouter
         superAdminGuardMiddleware,
         idValidation,
         deleteBlogHandler
+    )
+
+    .get(
+        BLOGS_ROUTES.BY_ID,
+        idValidation,
+        paginationAndSortingValidation(PostSortField),
+        inputValidationResultMiddleware,
+        sanitizeQueryParams,
+        getPostsByBlogIdHandler as unknown as RequestHandler
     );
