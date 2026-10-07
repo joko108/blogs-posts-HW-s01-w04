@@ -9,13 +9,22 @@ import { idValidation } from "../../core/middlewares/validation/params-id.valida
 import { inputValidationResultMiddleware } from "../../core/middlewares/validation/input-validation-result.middleware";
 import { superAdminGuardMiddleware } from "../../auth/middlewares/super-admin.guard.middleware";
 import { blogInputDtoValidation } from "../validation/blog.unput-dto.validation-middlewares";
+import {
+    paginationAndSortingValidation
+} from "../../core/middlewares/validation/query-pagination-sorting.validation.middleware";
+import {sanitizeQueryParams} from "../../core/middlewares/validation/sanitize-query.middleware";
 
 export const blogsRouter = Router({});
 
 // Роутер, направляющие реквест по необходимым мидлварам и хендлерам
 // Также, для POST, PUT и DELETE добавлена авторизация
 blogsRouter
-    .get(BLOGS_ROUTES.ROOT, getBlogListHandler)
+    .get(
+        BLOGS_ROUTES.ROOT,
+        paginationAndSortingValidation,
+        inputValidationResultMiddleware,
+        sanitizeQueryParams,
+        getBlogListHandler)
 
     .get(
         BLOGS_ROUTES.BY_ID,

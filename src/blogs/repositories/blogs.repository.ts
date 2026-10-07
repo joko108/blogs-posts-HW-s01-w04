@@ -1,11 +1,37 @@
 import { Blog } from "../types/blog";
 import { ObjectId, WithId } from "mongodb";
 import { blogCollection } from "../../db/collections";
+import { BlogQueryInput } from "../router/input/blog-query.input";
 
 export const blogsRepository = {
     // Возвращаем все блоги
-    async findAll(): Promise<WithId<Blog>[]> {
-        return blogCollection.find().toArray();
+    async findMany(queryDto: BlogQueryInput): Promise<{ items: WithId<Blog>[]; totalCount: number}> {
+        const {
+            pageNumber,
+            pageSize,
+            sortBy,
+            sortDirection,
+            searchBlogNameTerm,
+        } = queryDto;
+
+        const skip = (pageNumber - 1) * pageSize;
+        const filter: any = {};
+
+        if (searchBlogNameTerm) {
+            filter.$or = [];
+            filter.$or.push({ name: { $regex: searchBlogNameTerm, $optional: 'i' } });
+        }
+
+        const items = await blogCollection
+            .find(filter)
+            .sort({ [sortBy]: sortDirection })
+            .skip(skip)
+            .limit(pageSize)
+            .toArray();
+
+        const totalCount = await blogCollection.countDocuments(filter);
+
+        return { items, totalCount };
     },
 
     // Возвращаем конкретный блог по id
