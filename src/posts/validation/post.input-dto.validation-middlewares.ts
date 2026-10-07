@@ -36,3 +36,11 @@ export const postInputDtoValidation = [
     contentValidation,
     blogIdValidation,
 ];
+
+// Для эндпоинта /blogs/:blogId/posts — blogId берётся из URL, в body его нет
+export const postInputDtoWithoutBlogIdValidation = [
+    titleValidation,
+    shortDescriptionValidation,
+    contentValidation,
+];
+

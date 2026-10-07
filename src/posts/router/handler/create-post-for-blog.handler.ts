@@ -1,38 +1,30 @@
 import { Request, Response } from "express";
-import { PostInputDto } from "../../dto/post.input.dto";
-import { Post } from "../../types/post";
 import { HttpStatus } from "../../../core/types/http-statuses";
-import { postsRepository } from "../../repositories/posts.repository";
+import { PostInputDto } from "../../dto/post.input.dto";
 import { blogsRepository } from "../../../blogs/repositories/blogs.repository";
 import { createErrorMessages } from "../../../core/middlewares/validation/input-validation-result.middleware";
+import { Post } from "../../types/post";
+import { postsRepository } from "../../repositories/posts.repository";
 import { mapToPostViewModel } from "../mappers/map-to-post-view-model.utils";
 
-/*
-Контроллер на обновление, не знает, что происходит в БД,
-его задача: принять запрос, перенаправить в репозиторий,
-получить данные из репозитория, вернуть респонс.
-*/
-export const createPostHandler = async (
-    req: Request<{}, {}, PostInputDto>,
+export const createPostForBlogHandler = async (
+    req: Request<{ blogId: string }, {}, PostInputDto>,
     res: Response
 ) => {
     try {
-        // Поскольку по API необходимо вернуть в т.ч. наименование блога,
-        // для его извлечения нужен id блога.
-        const blogId = req.body.blogId;
+        const blogId = req.params.blogId;
 
         const blog = await blogsRepository.findById(blogId);
-
         if (!blog) {
             res
                 .status(HttpStatus.NotFound_404)
-                .send(createErrorMessages([{ message: 'Blog not found', field: 'blogId' }]));
-
+                .send(createErrorMessages([{ message: 'Blog not found', field: 'id' }]));
             return;
         }
 
         const newPost: Post = {
             ...req.body,
+            blogId: blogId,  // Явно добавляем blogId.
             blogName: blog.name,
             createdAt: new Date(),
         };

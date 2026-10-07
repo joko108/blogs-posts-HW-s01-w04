@@ -10,9 +10,7 @@ export const getPostListHandler = async (
 ) => {
     try {
         const queryInput = req.query;
-
         const { items, totalCount } = await postsRepository.findMany(queryInput);
-
         // Наружу отдаем view-model
         const output = mapToPostsListViewModelUtil(items, {
             pageNumber: queryInput.pageNumber,

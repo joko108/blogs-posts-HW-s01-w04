@@ -23,6 +23,7 @@
 │   │   │   │   ├── delete-blog.handler.ts
 │   │   │   │   ├── get-blog-list.handler.ts
 │   │   │   │   ├── get-blog.handler.ts
+│   │   │   │   ├── get-posts-by-blog-id.handler.ts
 │   │   │   │   └── update-blog.handler.ts
 │   │   │   ├── input
 │   │   │   │   ├── blog-query.input.ts
@@ -62,17 +63,23 @@
 │   │   │   └── posts.repository.ts
 │   │   ├── router
 │   │   │   ├── handler
+│   │   │   │   ├── create-post-for-blog.handler.ts
 │   │   │   │   ├── create-post.handler.ts
 │   │   │   │   ├── delete-post.handler.ts
 │   │   │   │   ├── get-post-list.handler.ts
 │   │   │   │   ├── get-post.handler.ts
 │   │   │   │   └── update-post.handler.ts
+│   │   │   ├── input
+│   │   │   │   ├── post-sort-field.ts
+│   │   │   │   └── posts-for-blog-query.input.ts
 │   │   │   ├── mappers
-│   │   │   │   └── map-to-post-view-model.utils.ts
+│   │   │   │   ├── map-to-post-view-model.utils.ts
+│   │   │   │   └── map-to-posts-list-view-model.util.ts
 │   │   │   └── posts.router.ts
 │   │   ├── types
 │   │   │   ├── post-view-model.ts
-│   │   │   └── post.ts
+│   │   │   ├── post.ts
+│   │   │   └── posts-list-view-model.ts
 │   │   └── validation
 │   │       └── post.input-dto.validation-middlewares.ts
 │   ├── settings
@@ -87,4 +94,4 @@
 │           └── testing.router.ts
 └── tsconfig.json
 
-33 directories, 55 files
+34 directories, 61 files

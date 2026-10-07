@@ -7,11 +7,11 @@ import { mapToPostsListViewModelUtil } from "../../../posts/router/mappers/map-t
 import { postsRepository } from "../../../posts/repositories/posts.repository";
 
 export const getPostsByBlogIdHandler = async (
-    req: Request<{ id: string }, {}, {}, PostsForBlogQueryInput>,
+    req: Request<{ blogId: string }, {}, {}, PostsForBlogQueryInput>,
     res: Response
 ) => {
     try {
-        const blogId = req.params.id;
+        const blogId = req.params.blogId;
         const queryInput = req.query;
 
         // Проверяем, существует ли блог.
