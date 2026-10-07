@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import { POSTS_ROUTES } from "../constants/posts.paths";
 import { getPostListHandler } from "./handler/get-post-list.handler";
 import { getPostHandler } from "./handler/get-post.handler";
@@ -8,14 +8,25 @@ import { deletePostHandler } from "./handler/delete-post.handler";
 import { idValidation } from "../../core/middlewares/validation/params-id.validation.middleware";
 import { inputValidationResultMiddleware } from "../../core/middlewares/validation/input-validation-result.middleware";
 import { superAdminGuardMiddleware } from "../../auth/middlewares/super-admin.guard.middleware";
-import { postInputDtoValidation } from "../validation/post.unput-dto.validation-middlewares";
+import { postInputDtoValidation } from "../validation/post.input-dto.validation-middlewares";
+import {
+    paginationAndSortingValidation
+} from "../../core/middlewares/validation/query-pagination-sorting.validation.middleware";
+import {BlogSortField} from "../../blogs/router/input/blog-sort-field";
+import {sanitizeQueryParams} from "../../core/middlewares/validation/sanitize-query.middleware";
 
 export const postsRouter = Router({});
 
 // Роутер, направляющие реквест по необходимым мидлварам и хендлерам
 // Также, для POST, PUT и DELETE добавлена авторизация
 postsRouter
-    .get(POSTS_ROUTES.ROOT, getPostListHandler)
+    .get(
+        POSTS_ROUTES.ROOT,
+        paginationAndSortingValidation(BlogSortField),
+        inputValidationResultMiddleware,
+        sanitizeQueryParams,
+        getPostListHandler as unknown as RequestHandler
+    )
 
     .get(
         POSTS_ROUTES.BY_ID,

@@ -1,5 +1,6 @@
 .
 ├── README.md
+├── docker-compose.yaml
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
@@ -23,20 +24,30 @@
 │   │   │   │   ├── get-blog-list.handler.ts
 │   │   │   │   ├── get-blog.handler.ts
 │   │   │   │   └── update-blog.handler.ts
+│   │   │   ├── input
+│   │   │   │   ├── blog-query.input.ts
+│   │   │   │   └── blog-sort-field.ts
 │   │   │   └── mappers
-│   │   │       └── map-to-blog-view-model.utils.ts
+│   │   │       ├── map-to-blog-view-model.utils.ts
+│   │   │       └── map-to-blogs-list-view-model.util.ts
 │   │   ├── types
 │   │   │   ├── blog-view-model.ts
-│   │   │   └── blog.ts
+│   │   │   ├── blog.ts
+│   │   │   └── blogs-list-view-model.ts
 │   │   └── validation
-│   │       └── blog.unput-dto.validation-middlewares.ts
+│   │       └── blog.input-dto.validation-middlewares.ts
 │   ├── core
 │   │   ├── middlewares
 │   │   │   └── validation
 │   │   │       ├── input-validation-result.middleware.ts
-│   │   │       └── params-id.validation.middleware.ts
+│   │   │       ├── params-id.validation.middleware.ts
+│   │   │       ├── query-pagination-sorting.validation.middleware.ts
+│   │   │       └── sanitize-query.middleware.ts
 │   │   └── types
 │   │       ├── http-statuses.ts
+│   │       ├── paginated.output.ts
+│   │       ├── pagination-and-sorting.ts
+│   │       ├── sort-direction.ts
 │   │       └── validation-error.ts
 │   ├── db
 │   │   ├── collections.ts
@@ -47,7 +58,7 @@
 │   │   │   └── posts.paths.ts
 │   │   ├── dto
 │   │   │   └── post.input.dto.ts
-│   │   ├── repository
+│   │   ├── repositories
 │   │   │   └── posts.repository.ts
 │   │   ├── router
 │   │   │   ├── handler
@@ -63,7 +74,7 @@
 │   │   │   ├── post-view-model.ts
 │   │   │   └── post.ts
 │   │   └── validation
-│   │       └── post.unput-dto.validation-middlewares.ts
+│   │       └── post.input-dto.validation-middlewares.ts
 │   ├── settings
 │   │   └── config.ts
 │   ├── setup-app.ts
@@ -76,4 +87,4 @@
 │           └── testing.router.ts
 └── tsconfig.json
 
-32 directories, 45 files
+33 directories, 55 files

@@ -4,7 +4,10 @@ import { blogsRepository } from "../../repositories/blogs.repository";
 import { BlogQueryInput } from "../input/blog-query.input";
 import { mapToBlogsListViewModelUtil } from "../mappers/map-to-blogs-list-view-model.util";
 
-export const getBlogListHandler = async (req: Request<{}, {}, {}, BlogQueryInput>, res: Response) => {
+export const getBlogListHandler = async (
+    req: Request<{}, {}, {}, BlogQueryInput>,
+    res: Response
+) => {
     try {
         const queryInput = req.query;
 

@@ -1,11 +1,30 @@
 import { Post } from "../types/post";
 import { ObjectId, WithId } from "mongodb";
 import { postCollection } from "../../db/collections";
+import { PostsForBlogQueryInput } from "../router/input/posts-for-blog-query.input";
 
 export const postsRepository = {
     // Возвращаем все блоги
-    async findAllPosts(): Promise<WithId<Post>[]> {
-        return postCollection.find().toArray();
+    async findMany(queryDto: PostsForBlogQueryInput): Promise<{ items: WithId<Post>[]; totalCount: number }> {
+        const {
+            pageNumber,
+            pageSize,
+            sortBy,
+            sortDirection,
+        } = queryDto;
+
+        const skip = (pageNumber - 1) * pageSize;
+
+        const items = await postCollection
+            .find()
+            .sort({ [sortBy]: sortDirection })
+            .skip(skip)
+            .limit(pageSize)
+            .toArray();
+
+        const totalCount = await postCollection.countDocuments();
+
+        return { items, totalCount };
     },
 
     // Возвращаем конкретный блог по id
@@ -31,4 +50,25 @@ export const postsRepository = {
         const deleteResult = await postCollection.deleteOne({ _id: new ObjectId(id) });
         return deleteResult.deletedCount > 0;
     },
+
+    async findManyByBlogId(
+        blogId: string,
+        queryDto: PostsForBlogQueryInput
+    ): Promise<{ items: WithId<Post>[]; totalCount: number }> {
+        const { pageNumber, pageSize, sortBy, sortDirection } = queryDto;
+        const skip = (pageNumber - 1) * pageSize;
+
+        const filter = { blogId };
+
+        const items = await postCollection
+            .find(filter)
+            .sort({ [sortBy]: sortDirection })
+            .skip(skip)
+            .limit(pageSize)
+            .toArray();
+
+        const totalCount = await postCollection.countDocuments(filter);
+
+        return { items, totalCount };
+    }
 };

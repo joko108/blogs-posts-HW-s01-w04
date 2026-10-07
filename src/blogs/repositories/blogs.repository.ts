@@ -19,7 +19,7 @@ export const blogsRepository = {
 
         if (searchBlogNameTerm) {
             filter.$or = [];
-            filter.$or.push({ name: { $regex: searchBlogNameTerm, $optional: 'i' } });
+            filter.$or.push({ name: { $regex: searchBlogNameTerm, $options: 'i' } });
         }
 
         const items = await blogCollection
