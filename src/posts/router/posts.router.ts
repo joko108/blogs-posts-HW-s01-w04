@@ -12,8 +12,8 @@ import { postInputDtoValidation } from "../validation/post.input-dto.validation-
 import {
     paginationAndSortingValidation
 } from "../../core/middlewares/validation/query-pagination-sorting.validation.middleware";
-import {BlogSortField} from "../../blogs/router/input/blog-sort-field";
-import {sanitizeQueryParams} from "../../core/middlewares/validation/sanitize-query.middleware";
+import { sanitizeQueryParams } from "../../core/middlewares/validation/sanitize-query.middleware";
+import { PostSortField } from "./input/post-sort-field";
 
 export const postsRouter = Router({});
 
@@ -22,8 +22,8 @@ export const postsRouter = Router({});
 postsRouter
     .get(
         POSTS_ROUTES.ROOT,
-        paginationAndSortingValidation(BlogSortField),
-        inputValidationResultMiddleware,
+        paginationAndSortingValidation(PostSortField),
+        // inputValidationResultMiddleware,
         sanitizeQueryParams,
         getPostListHandler as unknown as RequestHandler
     )
