@@ -30,6 +30,11 @@ export const inputValidationResultMiddleware = (
         .array({ onlyFirstError: true }); // Если по одному полю несколько ошибок, уйдет только первая
 
     if (errors.length > 0) {
+
+        console.log('Validation errors:', JSON.stringify(errors, null, 2)); // ← ВРЕМЕННАЯ СТРОКА
+        console.log('Request URL:', req.originalUrl);
+        console.log('Request query:', JSON.stringify(req.query));
+
         res.status(HttpStatus.BadRequest_400).json({ errorsMessages: errors });
         return;
     }

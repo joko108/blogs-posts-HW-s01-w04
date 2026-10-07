@@ -23,7 +23,7 @@ postsRouter
     .get(
         POSTS_ROUTES.ROOT,
         paginationAndSortingValidation(PostSortField),
-        // inputValidationResultMiddleware,
+        inputValidationResultMiddleware,
         sanitizeQueryParams,
         getPostListHandler as unknown as RequestHandler
     )
