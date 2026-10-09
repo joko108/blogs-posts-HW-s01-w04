@@ -5,21 +5,16 @@ import { getBlogHandler } from "./handlers/get-blog.handler";
 import { createBlogHandler } from "./handlers/create-blog.handler";
 import { updateBlogHandler } from "./handlers/update-blog.handler";
 import { deleteBlogHandler } from "./handlers/delete-blog.handler";
-import {blogIdParamValidation, idValidation} from "../../core/middlewares/validation/params-id.validation.middleware";
+import { blogIdParamValidation, idValidation } from "../../core/middlewares/validation/params-id.validation.middleware";
 import { inputValidationResultMiddleware } from "../../core/middlewares/validation/input-validation-result.middleware";
 import { superAdminGuardMiddleware } from "../../auth/middlewares/super-admin.guard.middleware";
 import { blogInputDtoValidation } from "../validation/blog.input-dto.validation-middlewares";
-import {
-    paginationAndSortingValidation
-} from "../../core/middlewares/validation/query-pagination-sorting.validation.middleware";
+import { paginationAndSortingValidation } from "../../core/middlewares/validation/query-pagination-sorting.validation.middleware";
 import { sanitizeQueryParams } from "../../core/middlewares/validation/sanitize-query.middleware";
 import { BlogSortField } from "./input/blog-sort-field";
 import { PostSortField } from "../../posts/router/input/post-sort-field";
 import { getPostsByBlogIdHandler } from "./handlers/get-posts-by-blog-id.handler";
-import {
-    postInputDtoValidation,
-    postInputDtoWithoutBlogIdValidation
-} from "../../posts/validation/post.input-dto.validation-middlewares";
+import { postInputDtoWithoutBlogIdValidation } from "../../posts/validation/post.input-dto.validation-middlewares";
 import { createPostForBlogHandler } from "../../posts/router/handler/create-post-for-blog.handler";
 
 export const blogsRouter = Router({});
